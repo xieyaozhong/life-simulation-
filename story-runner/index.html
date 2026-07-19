@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="會持續生成角色、事件、物品與故事支線的自動故事運行器。" />
+  <meta name="theme-color" content="#080b12" />
+  <title>無盡故事運行器</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="glow glow-a" aria-hidden="true"></div>
+  <div class="glow glow-b" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="../" aria-label="返回人生模擬器首頁">
+      <span class="brand-mark">◈</span>
+      <span>
+        <strong>無盡故事運行器</strong>
+        <small>Endless Narrative Engine</small>
+      </span>
+    </a>
+    <div class="status-wrap" aria-live="polite">
+      <span id="statusDot" class="status-dot"></span>
+      <span id="statusText">等待啟動</span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="story-panel" aria-labelledby="storyTitle">
+      <div class="panel-head">
+        <div>
+          <p class="eyebrow">LIVE CHRONICLE</p>
+          <h1 id="storyTitle">世界正在等待第一個念頭</h1>
+        </div>
+        <div class="chapter-counter">
+          <span>片段</span>
+          <strong id="fragmentCount">0</strong>
+        </div>
+      </div>
+
+      <div class="controls" aria-label="故事控制列">
+        <button id="startButton" class="button button-primary" type="button">
+          <span class="button-icon">▶</span>開始
+        </button>
+        <button id="stopButton" class="button button-secondary" type="button" disabled>
+          <span class="button-icon">■</span>停止
+        </button>
+        <button id="newWorldButton" class="button button-ghost" type="button">生成新世界</button>
+        <label class="speed-control" for="speedSelect">
+          <span>速度</span>
+          <select id="speedSelect">
+            <option value="5200">沉浸</option>
+            <option value="3400" selected>標準</option>
+            <option value="1900">快速</option>
+            <option value="900">暴走</option>
+          </select>
+        </label>
+      </div>
+
+      <div id="storyStream" class="story-stream" role="log" aria-live="polite" aria-relevant="additions">
+        <article class="story-entry prologue">
+          <div class="entry-meta"><span>序章</span><time>尚未開始</time></div>
+          <p>按下「開始」後，這個世界會自行創造人物、物品與事件。當某些線索再次相遇，右側將出現可以進入的故事入口。</p>
+        </article>
+      </div>
+
+      <div class="stream-footer">
+        <span id="nextPulse">引擎尚未運行</span>
+        <button id="scrollLatestButton" class="text-button" type="button">前往最新劇情 ↓</button>
+      </div>
+    </section>
+
+    <aside class="world-panel" aria-label="世界狀態">
+      <section class="world-card world-summary">
+        <p class="eyebrow">CURRENT WORLD</p>
+        <h2 id="worldName">未命名世界</h2>
+        <p id="worldMood">時間還沒有開始流動。</p>
+        <div class="world-stats">
+          <div><strong id="characterCount">0</strong><span>人物</span></div>
+          <div><strong id="itemCount">0</strong><span>物品</span></div>
+          <div><strong id="threadCount">0</strong><span>線索</span></div>
+        </div>
+      </section>
+
+      <section class="world-card">
+        <div class="card-title-row">
+          <div>
+            <p class="eyebrow">STORY DOORS</p>
+            <h2>故事入口</h2>
+          </div>
+          <span id="doorCount" class="pill">0</span>
+        </div>
+        <p class="muted">人物、事件或物品形成可延伸的關聯後，入口會在這裡出現。</p>
+        <div id="storyDoors" class="story-doors">
+          <div class="empty-state">尚未形成足夠強烈的故事線。</div>
+        </div>
+      </section>
+
+      <section class="world-card">
+        <div class="card-title-row">
+          <div>
+            <p class="eyebrow">MEMORY</p>
+            <h2>世界記憶</h2>
+          </div>
+        </div>
+        <div id="memoryList" class="memory-list">
+          <p class="empty-state">新出現的重要元素會被世界記住。</p>
+        </div>
+      </section>
+    </aside>
+  </main>
+
+  <div id="perspectiveModal" class="modal" hidden>
+    <div class="modal-backdrop" data-close-modal></div>
+    <section class="perspective-card" role="dialog" aria-modal="true" aria-labelledby="perspectiveTitle">
+      <button class="modal-close" type="button" aria-label="關閉第一人稱故事" data-close-modal>×</button>
+      <p id="perspectiveKicker" class="eyebrow">FIRST PERSON</p>
+      <h2 id="perspectiveTitle">角色的故事</h2>
+      <div id="perspectiveBody" class="perspective-body"></div>
+      <div class="perspective-actions">
+        <button id="continuePerspectiveButton" class="button button-primary" type="button">繼續這條故事線</button>
+        <button class="button button-secondary" type="button" data-close-modal>返回世界</button>
+      </div>
+    </section>
+  </div>
+
+  <template id="storyEntryTemplate">
+    <article class="story-entry">
+      <div class="entry-meta"><span></span><time></time></div>
+      <p></p>
+      <div class="entry-tags"></div>
+    </article>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
