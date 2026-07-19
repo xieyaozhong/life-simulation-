@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="透過人生選擇，自動生成履歷、學經歷與作品集 Demo 的人生模擬器。" />
+  <title>人生模擬器｜履歷與作品生成</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">∞</div>
+      <div>
+        <strong>人生模擬器</strong>
+        <span>Life Path Simulator</span>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <button id="resetBtn" class="ghost-btn">重新開始</button>
+      <button id="exportBtn" class="ghost-btn">匯出資料</button>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <section class="hero panel">
+      <div class="hero-copy">
+        <span class="eyebrow">用選擇，生成另一種可能</span>
+        <h1>選出一條人生路徑，<br />讓履歷與作品自己長出來。</h1>
+        <p>從興趣、升學、技能、工作到轉折，每一次選擇都會改變你的能力值、學經歷與作品集。</p>
+      </div>
+      <div class="hero-profile">
+        <label for="playerName">角色名稱</label>
+        <input id="playerName" type="text" maxlength="20" value="林星河" placeholder="輸入角色名稱" />
+        <label for="lifeGoal">人生主題</label>
+        <select id="lifeGoal">
+          <option value="自由創作者">自由創作者</option>
+          <option value="軟體工程師">軟體工程師</option>
+          <option value="產品設計師">產品設計師</option>
+          <option value="教育工作者">教育工作者</option>
+          <option value="創業者">創業者</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="game-grid">
+      <aside class="panel status-panel">
+        <div class="section-heading">
+          <span>目前狀態</span>
+          <strong id="stageLabel">序章</strong>
+        </div>
+
+        <div class="avatar-card">
+          <div class="avatar" id="avatar">林</div>
+          <div>
+            <h2 id="statusName">林星河</h2>
+            <p id="statusTitle">尚未定義的人生</p>
+          </div>
+        </div>
+
+        <div class="stats" id="stats"></div>
+
+        <div class="timeline-mini">
+          <div class="timeline-track"><div id="progressBar"></div></div>
+          <span id="progressText">0 / 7</span>
+        </div>
+      </aside>
+
+      <section class="panel choice-panel">
+        <div id="introScreen" class="screen active">
+          <span class="eyebrow">開始模擬</span>
+          <h2>這不是測驗，而是一套人生生成器。</h2>
+          <p>每題都沒有標準答案。你的選擇會形成獨特路徑，最後產出可閱讀、可列印、可繼續修改的履歷與作品集。</p>
+          <button id="startBtn" class="primary-btn">開始選擇</button>
+        </div>
+
+        <div id="questionScreen" class="screen">
+          <div class="question-meta">
+            <span id="questionNumber">01</span>
+            <span id="questionStage">童年</span>
+          </div>
+          <h2 id="questionTitle"></h2>
+          <p id="questionDescription"></p>
+          <div id="choices" class="choices"></div>
+        </div>
+
+        <div id="resultScreen" class="screen">
+          <span class="eyebrow">模擬完成</span>
+          <h2>你已經走出一條完整的人生路徑。</h2>
+          <p>以下內容依照你的選擇生成。你可以列印成 PDF，或重新開始，探索另一種可能。</p>
+          <div class="result-actions">
+            <button id="viewResumeBtn" class="primary-btn">查看生成結果</button>
+            <button id="restartInlineBtn" class="secondary-btn">再玩一次</button>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section id="outputSection" class="output-section hidden">
+      <div class="output-toolbar panel">
+        <div>
+          <span class="eyebrow">Generated Profile</span>
+          <h2>履歷與作品集 Demo</h2>
+        </div>
+        <button id="printBtn" class="primary-btn">列印 / 存成 PDF</button>
+      </div>
+
+      <article class="resume-sheet" id="resumeSheet">
+        <header class="resume-header">
+          <div>
+            <span class="resume-kicker">LIFE SIMULATION PROFILE</span>
+            <h1 id="resumeName">林星河</h1>
+            <p id="resumeHeadline"></p>
+          </div>
+          <div class="resume-contact">
+            <span>simulator@example.com</span>
+            <span>Taichung, Taiwan</span>
+            <span>portfolio.demo</span>
+          </div>
+        </header>
+
+        <section class="resume-summary">
+          <h3>個人摘要</h3>
+          <p id="resumeSummary"></p>
+        </section>
+
+        <div class="resume-columns">
+          <div class="resume-main">
+            <section>
+              <h3>學歷與學習歷程</h3>
+              <div id="educationList" class="resume-list"></div>
+            </section>
+
+            <section>
+              <h3>工作與實務經歷</h3>
+              <div id="experienceList" class="resume-list"></div>
+            </section>
+          </div>
+
+          <aside class="resume-side">
+            <section>
+              <h3>核心能力</h3>
+              <div id="skillTags" class="skill-tags"></div>
+            </section>
+            <section>
+              <h3>能力雷達</h3>
+              <div id="resumeStats" class="resume-stats"></div>
+            </section>
+            <section>
+              <h3>人生關鍵字</h3>
+              <div id="keywordTags" class="keyword-tags"></div>
+            </section>
+          </aside>
+        </div>
+      </article>
+
+      <section class="portfolio-section">
+        <div class="portfolio-heading">
+          <span class="eyebrow">Selected Works</span>
+          <h2>作品 Demo</h2>
+          <p>系統根據你累積的技能與經歷，自動組合出三個可延伸的作品題目。</p>
+        </div>
+        <div id="portfolioGrid" class="portfolio-grid"></div>
+      </section>
+    </section>
+  </main>
+
+  <footer>
+    <span>人生模擬器 Prototype</span>
+    <span>所有內容皆為模擬生成，可自由修改。</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
